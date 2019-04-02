@@ -1,0 +1,25 @@
+.container {
+    color: white;
+    position: fixed;
+    z-index: 2;
+    padding: 50px;
+    /*font-size: 20px;*/
+}
+
+.languageOpt {
+    position: fixed;
+    right: 50px;
+    /*color: white;*/
+}
+
+.logo {
+    position: fixed;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.contact {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+}

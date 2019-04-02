@@ -1,0 +1,13 @@
+.container {
+    min-height: 100vh;
+    background-color: black;
+    display: flex;
+    align-items: center;
+}
+
+.aboutText {
+    margin: 90px 50px;
+    color: white;
+    font-size: 70px;
+    font-weight: bold;
+}
