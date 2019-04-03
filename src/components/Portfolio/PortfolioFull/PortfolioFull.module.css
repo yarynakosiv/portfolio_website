@@ -1,7 +1,7 @@
 
 .container {
     background-color: black;
-    position: relative;
+    position: absolute;
     z-index: 10;
     width: 100vw;
     min-height: 100vh;
@@ -41,4 +41,8 @@
     color: white;
     font-size: 70px;
     font-weight: bold;
+}
+
+.container img {
+    max-width: 100vw;
 }

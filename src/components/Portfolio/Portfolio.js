@@ -4,9 +4,10 @@ import s from './Portfolio.module.css';
 import ImageBackground from '../../img/lviv.jpg';
 import Radium from "radium";
 import {PortfolioFull} from './PortfolioFull/PortfolioFull';
+import {BrowserRouter} from "react-router-dom";
 
 class Portfolio extends Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             projects: [],
@@ -17,18 +18,18 @@ class Portfolio extends Component {
         this.closeExpandedPost = this.closeExpandedPost.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         fetch('http://localhost:4000/projects').then(resp => resp.json()).then(data => {
-            this.setState({ projects: data, loading: false });
+            this.setState({projects: data, loading: false});
         });
     }
 
     closeExpandedPost() {
-        this.setState({ expanded: null });
+        this.setState({expanded: null});
     }
 
     render() {
-        const { projects, loading, expanded } = this.state;
+        const {projects, loading, expanded} = this.state;
 
         return loading ? <span>Loading ...</span> :
             <div className={s.container}>
@@ -36,8 +37,8 @@ class Portfolio extends Component {
                     projects.map(project =>
                         <div
                             key={project.id}
-                            className={(expanded && project.id === expanded) ? 'expanded' : ''+ ' ' + s.post}
-                            onClick={() => this.setState({ expanded: project.id })}
+                            className={(expanded && project.id === expanded) ? 'expanded' : '' + ' ' + s.post}
+                            onClick={() => this.setState({expanded: project.id})}
                         >
                             <div className={s.name}>{project.name}</div>
                             <img src={project.mainImg} alt={"img"}/>
@@ -48,29 +49,15 @@ class Portfolio extends Component {
                                 description={project.description}
                                 mainImg={project.mainImg}
                                 closer={this.closeExpandedPost}
-
-                            />}
+                            />
+                            }
+                            {/*<Portfolio style={{ display: 'none' }} />*/}
                         </div>
                     )
                 }
             </div>
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //

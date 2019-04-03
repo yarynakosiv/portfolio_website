@@ -12,52 +12,61 @@ class Login extends Component {
             authorized: false,
             fields: {}
         };
-        this.data = this.data.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
-    onSubmit = (e) => {
-        const {fields} = this.state;
-        console.log(fields);
-        e.preventDefault();
-        fields.login = e.currentTarget.login.value;
-        fields.password = e.currentTarget.password.value;
-        this.setState({fields});
-    };
-
-    componentDidMount() {
-        let Name;
-        let Password;
-
-        axios.get('http://localhost:4000/passwords')
-            .then(function (response) {
-                // const {name, password} = response.data[0];
-                Name = this.name;
-                Password = this.password;
-                console.log(Password);
-                console.log(Name);
-            })
-            .catch(function (error) {
-                    console.log(error);
-                }
-            );
-        console.log(Password);
-        console.log(Name);
-        if (Name && Password) {
-            console.log('hi');
-            this.data(Name, Password)
-        }
-
+    onSubmit() {
+        axios.post('http://localhost:4000/login', {
+            email: "admin@mail.com",
+            password: "qwerty"
+        }).then(response => {
+            const accessToken = response.accessToken;
+        });
     }
 
-    data = (Name, Password) => {
-        const {fields, authorized} = this.state;
-        console.log(authorized);
-        if (fields.login == Name &&
-            fields.password == Password) {
-            this.authorized = true;
-            console.log("hi")
-        }
-    };
+    // onSubmit = (e) => {
+    //     const {fields} = this.state;
+    //     console.log(fields);
+    //     e.preventDefault();
+    //     fields.login = e.currentTarget.login.value;
+    //     fields.password = e.currentTarget.password.value;
+    //     this.setState({fields});
+    // };
+    //
+    // componentDidMount() {
+    //     let Name;
+    //     let Password;
+    //
+    //     axios.get('http://localhost:4000/passwords')
+    //         .then(function (response) {
+    //             // const {name, password} = response.data[0];
+    //             Name = this.name;
+    //             Password = this.password;
+    //             console.log(Password);
+    //             console.log(Name);
+    //         })
+    //         .catch(function (error) {
+    //                 console.log(error);
+    //             }
+    //         );
+    //     console.log(Password);
+    //     console.log(Name);
+    //     if (Name && Password) {
+    //         console.log('hi');
+    //         this.data(Name, Password)
+    //     }
+    //
+    // }
+    //
+    // data = (Name, Password) => {
+    //     const {fields, authorized} = this.state;
+    //     console.log(authorized);
+    //     if (fields.login == Name &&
+    //         fields.password == Password) {
+    //         this.authorized = true;
+    //         console.log("hi")
+    //     }
+    // };
 
     render() {
         const {authorized} = this.state;
@@ -67,13 +76,13 @@ class Login extends Component {
                 <Admin/> :
                 <div className={s.container}>
                     {/*<h5>Please,login</h5>*/}
-                    <form name="myForm" onSubmit={this.onSubmit}>
+                    <form name="myForm">
                         <Link to="/">
                             <button className={s.close}><b>x</b></button>
                         </Link>
                         <input placeholder={"login"} type="text" name="login"/>
                         <input placeholder={"password"} type="text" name="password"/>
-                        <button className={s.save}>login</button>
+                        <button onClick={this.onSubmit} type="button" className={s.save}>login</button>
                     </form>
                 </div>
         );
