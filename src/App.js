@@ -6,6 +6,7 @@ import Portfolio from './components/Portfolio/Portfolio'
 import Contact from './components/contact/Contact'
 import FixedMenu from './components/fixedMenu/fixedMenu'
 import Login from './components/Login/Login'
+import Image from './components/Admin/Image'
 import Admin from './components/Admin/Admin'
 import projects from './projects.json'
 import PortfolioFull from './components/Portfolio/PortfolioFull/PortfolioFull'
@@ -17,17 +18,28 @@ class App extends Component {
         return (
             <div className="App">
                 <BrowserRouter>
-                    <Route path="/admin" component={Login}/>
+                    <Route exact path="/login" component={Login}/>
+                    {/*<Route exact path="/" component={}/>*/}
+                    <Route exact path='/' render={props =>
+                        <div>
+                            <About/>
+                            <FixedMenu/>
+                            <Portfolio/>
+                            <Contact/>
+                            <Image/>
+                        </div> } />
                 </BrowserRouter>
-                <FixedMenu/>
-                <About/>
-                <Portfolio/>
+
+                {/*// <FixedMenu/>*/}
+                {/*// <About/>*/}
+                {/*// <Portfolio/>*/}
+                {/*<Route path="/admin" component={Admin} />*/}
                 {/*{*/}
                 {/*projects.map(project => <Portfolio key={project.id} project={project} />)*/}
                 {/*}*/}
-                <Contact/>
+                {/*// <Contact/>*/}
                 {/*<Login/>*/}
-                <Admin/>
+                {/*<Admin/>*/}
                 {/*<PortfolioFull/>*/}
 
             </div>

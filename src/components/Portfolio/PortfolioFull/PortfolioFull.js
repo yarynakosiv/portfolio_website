@@ -15,6 +15,10 @@ const PortfolioFull = (props) => {
             </div>
             <div className={s.description}><p>{description}</p></div>
             <button className={s.closeButton} onClick={closer}>x</button>
+            <div className="images">
+                {/*{this.props.imageUrls.map(imageUrl => this.renderImage(imageUrl))}*/}
+                {/*{console.log(project.images)}*/}
+            </div>
 
         </div>
     );

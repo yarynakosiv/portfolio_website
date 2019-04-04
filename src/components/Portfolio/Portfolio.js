@@ -48,6 +48,7 @@ class Portfolio extends Component {
                                 name={project.name}
                                 description={project.description}
                                 mainImg={project.mainImg}
+                                // images={project.images}
                                 closer={this.closeExpandedPost}
                             />
                             }
