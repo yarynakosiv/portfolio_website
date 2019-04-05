@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import s from './Admin.module.css'
 import axios from "axios";
 import {storage} from '../../firebase';
-
 // import Login from "../Login/Login";
 
 class Admin extends Component {
@@ -14,8 +13,8 @@ class Admin extends Component {
             name: '',
             description: '',
             mainImg: '',
-            img: '',
             mainImgUrl: '',
+            img: '',
             imgUrl: ''
         };
 
@@ -28,11 +27,23 @@ class Admin extends Component {
     }
 
     save = (e) => {
+        console.log('f');
         const mainImg = this.state.mainImg;
+        console.log(mainImg);
+
+        e.preventDefault();
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+        console.log(this.state.mainImg);
+        console.log(this.state.img);
+
         const uploadTask = storage.ref(`images/${mainImg.name}`).put(mainImg);
         uploadTask.on('state_changed',
             (snapshot) => {
                 //progress function
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                this.setState({progress});
             },
             (error) => {
                 //error function
@@ -41,23 +52,17 @@ class Admin extends Component {
             () => {
                 //complete function
                 storage.ref('images').child(mainImg.name).getDownloadURL().then(url => {
-                    console.log(url)
+                    console.log(url);
+                    this.setState({url});
                 })
             });
-
-        e.preventDefault();
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-        console.log(this.state.mainImg);
-        console.log(this.state.img);
     };
 
     change = e => {
         this.setState({
             [e.target.name]: e.target.value
         });
-        console.log(this.mainImg.value);
+        // console.log(this.mainImg.value);
         console.log(this.state.mainImg);
         console.log(this.state.img);
         console.log(this.state)
@@ -66,10 +71,11 @@ class Admin extends Component {
     findId = (maxId) =>{
         axios.get('http://localhost:4000/projects')
                 .then(function (response) {
-                    maxId = this.project.id.reduce((max, item) => {
+                    // let portfolio = {response}
+                    maxId = this.projects.id.reduce((max, item) => {
                         return item.id > max ? item.id : max;
                     }, 0);
-
+                    console.log(maxId)
                 })
                 .catch(function (error) {
                         console.log(error);
@@ -79,23 +85,21 @@ class Admin extends Component {
 
     componentDidMount() {
         const accessToken = localStorage.getItem('accessToken');
-        const project = {
+        const newProject = {
             id: '',
             name: this.state.name,
             mainImg: this.state.mainImg,
             description: this.state.description,
             img: this.state.img
         };
-        // let id = this.findId();
+        newProject.id = this.findId();
         // project.id.push({label: id, id: (id + 1)});
-
-
         // this.img.push.({this.state.mainImg});
 
         axios({
             method: 'post',
             url: `http://localhost:4000/664/projects`,
-            data: project,
+            data: newProject,
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
@@ -166,7 +170,7 @@ class Admin extends Component {
                 <input className={s.mainImg}
                        name="mainImg"
                        type="file"
-                       value={this.state.mainImg}
+                       // value={this.state.mainImg}
                        onChange={e => this.change(e)}
                 />
                 <h3>Upload multiple project images</h3>
@@ -174,7 +178,7 @@ class Admin extends Component {
                        name="img"
                        type="file"
                        multiple
-                       value={this.state.img}
+                       // value={this.state.img}
                        onChange={e => this.change(e)}
                 />
                 <button className={s.button} onClick={this.save}>Save

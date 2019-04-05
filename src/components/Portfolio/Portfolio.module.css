@@ -1,10 +1,13 @@
 .container {
     display: flex;
+    max-width: 100vw;
 }
 
 .post {
     border: 1px solid #696969;
     width: 33.3333%;
+    /*min-width: 300px;*/
+    /*flex-wrap: wrap;*/
     filter: grayscale(100%);
     padding: 4.1% 3.3% 2.5% 3.3%;
     display: flex;
@@ -33,3 +36,33 @@ img {
     position: absolute;
     z-index: 2;
 }
+
+
+@media screen and (min-width: 768px) and (max-width: 960px) {
+    .container{
+        width: 100%;
+    }
+    .post {
+        width: 50vw;
+        padding: 0;
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    .post {
+        width: 50vw;
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .post {
+        width: 200px;
+        flex-wrap: wrap;
+    }
+
+}
+
+
+

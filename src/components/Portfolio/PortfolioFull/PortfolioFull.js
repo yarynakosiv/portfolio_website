@@ -6,16 +6,21 @@ import {Link} from "react-router-dom";
 
 const PortfolioFull = (props) => {
     const {name, description, closer, mainImg} = props;
+    console.log(closer);
 
     return (
         <div className={s.container}>
+            <button className={s.closeButton} onClick={closer}>x</button>
             <div className={s.first}>
                 <h2 className={s.name}>{name}</h2>
-                <img src={mainImg} alt={"img"}/>
+                <img className={s.mainImg} src={mainImg} alt={"img"}/>
             </div>
-            <div className={s.description}><p>{description}</p></div>
-            <button className={s.closeButton} onClick={closer}>x</button>
-            <div className="images">
+            <div className={s.second}>
+                <p className={s.description}>{description}</p>
+            </div>
+
+            <div className={s.third}>
+
                 {/*{this.props.imageUrls.map(imageUrl => this.renderImage(imageUrl))}*/}
                 {/*{console.log(project.images)}*/}
             </div>
@@ -24,16 +29,5 @@ const PortfolioFull = (props) => {
     );
 };
 
-
-// class PortfolioFull extends Component {
-//     render() {
-//         return (
-//             <div className={s.container}>
-//                 <div className={s.mainImg}><img src="" alt=""/></div>
-//                 <div className="description">Lorem ipsum dolor.</div>
-//             </div>
-//         );
-//     }
-// }
 
 export {PortfolioFull}

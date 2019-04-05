@@ -17,20 +17,21 @@ class App extends Component {
     render() {
         return (
             <div className="App">
+                <FixedMenu/>
                 <BrowserRouter>
                     <Route exact path="/login" component={Login}/>
                     {/*<Route exact path="/" component={}/>*/}
                     <Route exact path='/' render={props =>
                         <div>
                             <About/>
-                            <FixedMenu/>
+                            {/*<FixedMenu/>*/}
                             <Portfolio/>
                             <Contact/>
-                            <Image/>
+                            {/*<Image/>*/}
                         </div> } />
                 </BrowserRouter>
 
-                {/*// <FixedMenu/>*/}
+
                 {/*// <About/>*/}
                 {/*// <Portfolio/>*/}
                 {/*<Route path="/admin" component={Admin} />*/}

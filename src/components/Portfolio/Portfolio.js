@@ -30,6 +30,7 @@ class Portfolio extends Component {
 
     render() {
         const {projects, loading, expanded} = this.state;
+        console.log(expanded)
 
         return loading ? <span>Loading ...</span> :
             <div className={s.container}>
@@ -61,17 +62,6 @@ class Portfolio extends Component {
 }
 
 
-//
-// class Portfolio extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             projects: [],
-//             expanded: false
-//         };
-//         // this.handleClick = this.handleClick.bind(this);
-//     }
-//
 //     // handleClick() {
 //     //
 //     //     let expanded = this.state.expanded;
@@ -123,29 +113,6 @@ class Portfolio extends Component {
 //                 {this.state.projects}
 //             </div>
 //         );
-//     }
-// }
-
-// class Portfolio extends Component {
-//     render() {
-//         const { project } = this.props;
-//         const { mainImg } = project;
-//         // return (<div>
-//         //     <ul>
-//         //         <li>{project.name}</li>
-//         //         <li>{project.description}</li>
-//         //         <li><img src={`${IMAGE_FOLDER}/${mainImg}`} alt={""} /></li>
-//         //     </ul>
-//         // </div>);
-//         return (
-//             <div className={s.container}>
-//                 <div className={s.post}>
-//                     <img className={s.image} src={`${IMAGE_FOLDER}/${mainImg}`} alt=""/>
-//                     <div className={s.name}>{project.name}</div>
-//                 </div>
-//
-//             </div>
-//         )
 //     }
 // }
 
