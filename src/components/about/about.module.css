@@ -11,3 +11,34 @@
     font-size: 70px;
     font-weight: bold;
 }
+
+
+@media screen and (min-width: 768px) and (max-width: 960px) {
+    .aboutText {
+        /*margin: 90px 50px;*/
+        font-size: 60px;
+    }
+
+    /*.container{*/
+        /*height: auto;*/
+    /*}*/
+}
+
+
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    .container{
+        height: auto;
+    }
+    .aboutText {
+        /*margin: 90px 50px;*/
+        font-size: 50px;
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .aboutText {
+        margin: 30px 40px;
+        font-size: 32px;
+    }
+
+}

@@ -14,7 +14,6 @@ class Portfolio extends Component {
             loading: true,
             expanded: null,
         };
-
         this.closeExpandedPost = this.closeExpandedPost.bind(this);
     }
 
@@ -30,7 +29,7 @@ class Portfolio extends Component {
 
     render() {
         const {projects, loading, expanded} = this.state;
-        console.log(expanded)
+        console.log(expanded);
 
         return loading ? <span>Loading ...</span> :
             <div className={s.container}>

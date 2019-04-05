@@ -12,31 +12,21 @@ class Admin extends Component {
             loading: false,
             name: '',
             description: '',
-            mainImg: '',
+            mainImg: [],
             mainImgUrl: '',
-            img: '',
+            img: [],
             imgUrl: ''
         };
-
         this.save = this.save.bind(this);
-        this.change = this.change.bind(this);
-        // this.handleChange = this.handleChange.bind(this);
+        this.changeImg = this.changeImg.bind(this);
+        this.changeText = this.changeText.bind(this);
         console.log(this.state)
-        // this.encodeImageFileAsURL = this.encodeImageFileAsURL.bind(this);
-        // this.inputField = React.createRef();
     }
 
     save = (e) => {
-        console.log('f');
-        const mainImg = this.state.mainImg;
-        console.log(mainImg);
-
         e.preventDefault();
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-        console.log(this.state.mainImg);
-        console.log(this.state.img);
+        const {img, mainImg} = this.state;
+        console.log({img, mainImg});
 
         const uploadTask = storage.ref(`images/${mainImg.name}`).put(mainImg);
         uploadTask.on('state_changed',
@@ -58,29 +48,51 @@ class Admin extends Component {
             });
     };
 
-    change = e => {
+    changeText = e => {
+        e.preventDefault();
         this.setState({
             [e.target.name]: e.target.value
         });
-        // console.log(this.mainImg.value);
-        console.log(this.state.mainImg);
-        console.log(this.state.img);
+    };
+
+    changeImg = e => {
+        e.preventDefault();
+        const {img, mainImg} = this.state;
+        if (e.target.name === "img") {
+            for (let key in e.target.files) {
+                if (key === "item" || key === "length") {
+                    continue
+                }
+                let tmpPath = URL.createObjectURL(e.target.files[key]);
+                img.push(tmpPath)
+            }
+
+            this.setState({
+                [e.target.name]: img
+            });
+        } else {
+            let tmpPath = URL.createObjectURL(e.target.files[0]);
+            mainImg.push(tmpPath);
+            this.setState({
+                [e.target.name]: mainImg
+            });
+        }
+        console.log(img);
         console.log(this.state)
     };
 
-    findId = (maxId) =>{
+    findId = (maxId) => {
         axios.get('http://localhost:4000/projects')
-                .then(function (response) {
-                    // let portfolio = {response}
-                    maxId = this.projects.id.reduce((max, item) => {
-                        return item.id > max ? item.id : max;
-                    }, 0);
-                    console.log(maxId)
-                })
-                .catch(function (error) {
-                        console.log(error);
-                    }
-                );
+            .then(function () {
+                maxId = this.projects.id.reduce((max, item) => {
+                    return item.id > max ? item.id : max;
+                }, 0);
+                console.log(maxId)
+            })
+            .catch(function (error) {
+                    console.log(error);
+                }
+            );
     };
 
     componentDidMount() {
@@ -105,46 +117,14 @@ class Admin extends Component {
             }
         })
             .then(data => {
-                console.log('проект додано')
+                console.log('project created')
             })
             .catch(error => {
                 console.log(error)
             });
-
     }
 
-    // handleChange = e => {
-    //     if(e.target.files[0]){
-    //         const image = e.target.files[0];
-    //         this.setState(() => ({image}));
-    //     }
-    // };
-    //     const inputField = this.inputField.current;
-    //     if (!inputField || !inputField.value) {
-    //         return;
-    //     }
-    //     fields.name.push(this.name);
-    //     fields.description.push(this.description);
-    //     let mainImg = this.encodeImageFileAsURL(fields.mainImg);
-    //     mainImg.push(this.mainImg);
-    //     // fields.mainImg.push(this.mainImg);
-    //
-    //     this.setState({fields});
-    //     inputField.value = null;
-    //     this.setState({loading: true});
-    // };
-    // encodeImageFileAsURL = (element) => {
-    //     let file = element.files[0];
-    //     let reader = new FileReader();
-    //     reader.onloadend = function () {
-    //         return ('RESULT', reader.result)
-    //     };
-    //     reader.readAsDataURL(file);
-    //     console.log('RESULT', reader.result)
-    // };
-
     render() {
-
         return (
             <div className={s.container}>
                 <h2>Add Project</h2>
@@ -154,7 +134,7 @@ class Admin extends Component {
                        placeholder={"name"}
                        value={this.state.name}
                        type="text"
-                       onChange={e => this.change(e)}
+                       onChange={e => this.changeText(e)}
                 />
                 <h3>Project description</h3>
                 <input className={s.description}
@@ -164,22 +144,22 @@ class Admin extends Component {
                        type="textarea"
                        rows="10"
                        cols="30"
-                       onChange={e => this.change(e)}
+                       onChange={e => this.changeText(e)}
                 />
                 <h3>Upload main img</h3>
                 <input className={s.mainImg}
                        name="mainImg"
                        type="file"
-                       // value={this.state.mainImg}
-                       onChange={e => this.change(e)}
+                    // value={this.state.mainImg}
+                       onChange={e => this.changeImg(e)}
                 />
                 <h3>Upload multiple project images</h3>
                 <input className={s.projectImg}
                        name="img"
                        type="file"
                        multiple
-                       // value={this.state.img}
-                       onChange={e => this.change(e)}
+                    // value={this.state.img}
+                       onChange={e => this.changeImg(e)}
                 />
                 <button className={s.button} onClick={this.save}>Save
                 </button>

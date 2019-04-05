@@ -3,7 +3,6 @@ import s from './PortfolioFull.module.css'
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
-
 const PortfolioFull = (props) => {
     const {name, description, closer, mainImg} = props;
     console.log(closer);
@@ -18,7 +17,6 @@ const PortfolioFull = (props) => {
             <div className={s.second}>
                 <p className={s.description}>{description}</p>
             </div>
-
             <div className={s.third}>
 
                 {/*{this.props.imageUrls.map(imageUrl => this.renderImage(imageUrl))}*/}
@@ -28,6 +26,5 @@ const PortfolioFull = (props) => {
         </div>
     );
 };
-
 
 export {PortfolioFull}

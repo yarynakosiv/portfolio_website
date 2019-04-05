@@ -2,7 +2,7 @@
     color: white;
     position: fixed;
     z-index: 2;
-    padding: 50px;
+    margin: 40px;
     /*font-size: 20px;*/
 }
 
@@ -22,4 +22,16 @@
     position: fixed;
     right: 50px;
     bottom: 50px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1400px) {
+.container{font-size: 20px;}
+}
+
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    .container{font-size: 30px;}
+}
+
+@media screen and (max-width: 481px) {
+    .container{font-size: 18px;}
 }
