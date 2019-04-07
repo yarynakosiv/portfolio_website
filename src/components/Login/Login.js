@@ -37,7 +37,8 @@ class Login extends Component {
         })
             .then(response => {
                 localStorage.setItem('accessToken', response.data.accessToken);
-                if (response) {
+                this.setState({authorized: true});
+                if (this.authorized) {
                     return (<Admin/>)
                 }
             })
@@ -92,7 +93,7 @@ class Login extends Component {
 
     render() {
         let token = localStorage.getItem('accessToken');
-
+        // const { authorized } = this.state.
         return (
             token ?
                 <Admin/>

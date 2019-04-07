@@ -22,15 +22,17 @@ class Portfolio extends Component {
             this.setState({projects: data, loading: false});
         });
     }
-
-    closeExpandedPost() {
+    closeExpandedPost = function () {
+        console.log(this.state.expanded);
         this.setState({expanded: null});
-    }
+        console.log(this.state.expanded)
+    };
 
     render() {
         const {projects, loading, expanded} = this.state;
-        console.log(expanded);
-
+        // console.log(expanded);
+        console.log(this.state);
+        // let close = this.closeExpandedPost();
         return loading ? <span>Loading ...</span> :
             <div className={s.container}>
                 {
@@ -48,8 +50,11 @@ class Portfolio extends Component {
                                 name={project.name}
                                 description={project.description}
                                 mainImg={project.mainImg}
-                                // images={project.images}
-                                closer={this.closeExpandedPost}
+                                images={project.images}
+                                id={project.id}
+                                closeExpandedPost={this.closeExpandedPost}
+                                // closer={this.closeExpandedPost}
+                                // closer={this.state.expanded}
                             />
                             }
                             {/*<Portfolio style={{ display: 'none' }} />*/}

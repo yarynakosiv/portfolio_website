@@ -4,23 +4,36 @@ import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
 const PortfolioFull = (props) => {
-    const {name, description, closer, mainImg} = props;
-    console.log(closer);
+    const {name, description, mainImg, images, closeExpandedPost} = props;
+    console.log(closeExpandedPost);
+    // let close = closeExpandedPost();
+//    let close = () => {
+// closeExpandedPost()
+//     };
+
+    // console.log(close);
+
 
     return (
         <div className={s.container}>
-            <button className={s.closeButton} onClick={closer}>x</button>
+            <button className={s.closeButton} onClick={closeExpandedPost()}>x</button>
             <div className={s.first}>
                 <h2 className={s.name}>{name}</h2>
                 <img className={s.mainImg} src={mainImg} alt={"img"}/>
             </div>
+
+
             <div className={s.second}>
                 <p className={s.description}>{description}</p>
             </div>
-            <div className={s.third}>
 
-                {/*{this.props.imageUrls.map(imageUrl => this.renderImage(imageUrl))}*/}
-                {/*{console.log(project.images)}*/}
+
+            <div className={s.third}>
+                {
+                    images.map(image =>
+                        <img src={image} alt={"img"}/>
+                    )
+                }
             </div>
 
         </div>

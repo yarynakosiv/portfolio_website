@@ -1,51 +1,34 @@
 import React, {Component} from 'react';
-// import PropTypes from 'primport React, {Component} from 'react';
-import s from './Admin.module.css'
-import axios from "axios";
 import {storage} from '../../firebase';
-// import Login from "../Login/Login";
+import s from "./Admin.module.css";
+import axios from "axios";
+import Login from "../Login/Login";
 
 class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            authorized: false,
             loading: false,
             name: '',
             description: '',
-            mainImg: [],
-            mainImgUrl: '',
-            img: [],
-            imgUrl: ''
+            mainImg: {
+                image: null,
+                url: '',
+                progress: 0
+            }
         };
-        this.save = this.save.bind(this);
         this.changeImg = this.changeImg.bind(this);
+        this.save = this.save.bind(this);
         this.changeText = this.changeText.bind(this);
-        console.log(this.state)
+        this.createUUID = this.createUUID.bind(this);
     }
 
-    save = (e) => {
-        e.preventDefault();
-        const {img, mainImg} = this.state;
-        console.log({img, mainImg});
-
-        const uploadTask = storage.ref(`images/${mainImg.name}`).put(mainImg);
-        uploadTask.on('state_changed',
-            (snapshot) => {
-                //progress function
-                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                this.setState({progress});
-            },
-            (error) => {
-                //error function
-                console.log(error)
-            },
-            () => {
-                //complete function
-                storage.ref('images').child(mainImg.name).getDownloadURL().then(url => {
-                    console.log(url);
-                    this.setState({url});
-                })
-            });
+    changeImg = e => {
+        if (e.target.files[0]) {
+            const image = e.target.files[0];
+            this.setState(() => ({image}));
+        }
     };
 
     changeText = e => {
@@ -55,74 +38,69 @@ class Admin extends Component {
         });
     };
 
-    changeImg = e => {
-        e.preventDefault();
-        const {img, mainImg} = this.state;
-        if (e.target.name === "img") {
-            for (let key in e.target.files) {
-                if (key === "item" || key === "length") {
-                    continue
-                }
-                let tmpPath = URL.createObjectURL(e.target.files[key]);
-                img.push(tmpPath)
-            }
-
-            this.setState({
-                [e.target.name]: img
-            });
-        } else {
-            let tmpPath = URL.createObjectURL(e.target.files[0]);
-            mainImg.push(tmpPath);
-            this.setState({
-                [e.target.name]: mainImg
-            });
-        }
-        console.log(img);
-        console.log(this.state)
+    createUUID = () => {
+        let dt = new Date().getTime();
+        const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            // tslint:disable-next-line:no-bitwise
+            const r = (dt + Math.random() * 16) % 16 | 0;
+            dt = Math.floor(dt / 16);
+            // tslint:disable-next-line:no-bitwise
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+        return uuid;
     };
 
-    findId = (maxId) => {
-        axios.get('http://localhost:4000/projects')
-            .then(function () {
-                maxId = this.projects.id.reduce((max, item) => {
-                    return item.id > max ? item.id : max;
-                }, 0);
-                console.log(maxId)
-            })
-            .catch(function (error) {
-                    console.log(error);
-                }
-            );
-    };
+    save = () => {
+        const {image} = this.state;
+        const {mainImg} = this.state;
+        const uploadTask = storage.ref(`images/${image.name}`).put(image);
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                // progrss function ....
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                this.setState({progress});
+            },
+            (error) => {
+                // error function ....
+                console.log(error);
+            },
+            () => {
+                // complete function ....
+                storage.ref('images').child(image.name).getDownloadURL().then(url => {
+                    console.log(url);
+                    this.setState({url});
+                    console.log(this.state);
+                    console.log(this.state.mainImg.url);
 
-    componentDidMount() {
-        const accessToken = localStorage.getItem('accessToken');
-        const newProject = {
-            id: '',
-            name: this.state.name,
-            mainImg: this.state.mainImg,
-            description: this.state.description,
-            img: this.state.img
-        };
-        newProject.id = this.findId();
-        // project.id.push({label: id, id: (id + 1)});
-        // this.img.push.({this.state.mainImg});
+                    const accessToken = localStorage.getItem('accessToken');
+                    const newProject = {
+                        id: this.createUUID(),
+                        name: this.state.name,
+                        mainImg: this.state.url,
+                        description: this.state.description
+                    };
+                    console.log(newProject.id);
+                    console.log(newProject.mainImg);
 
-        axios({
-            method: 'post',
-            url: `http://localhost:4000/664/projects`,
-            data: newProject,
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        })
-            .then(data => {
-                console.log('project created')
-            })
-            .catch(error => {
-                console.log(error)
+
+                    axios({
+                        method: 'post',
+                        url: `http://localhost:4000/664/projects`,
+                        data: newProject,
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`
+                        }
+                    })
+                        .then(data => {
+                            console.log('project created')
+                        })
+                        .catch(error => {
+                            console.log(error)
+
+                        });
+                });
             });
-    }
+    };
 
     render() {
         return (
@@ -151,22 +129,41 @@ class Admin extends Component {
                        name="mainImg"
                        type="file"
                     // value={this.state.mainImg}
-                       onChange={e => this.changeImg(e)}
+                       onChange={this.changeImg}
                 />
-                <h3>Upload multiple project images</h3>
-                <input className={s.projectImg}
-                       name="img"
-                       type="file"
-                       multiple
-                    // value={this.state.img}
-                       onChange={e => this.changeImg(e)}
-                />
-                <button className={s.button} onClick={this.save}>Save
-                </button>
+                {/*<h3>Upload multiple project images</h3>*/}
+                {/*<input className={s.projectImg}*/}
+                {/*name="img"*/}
+                {/*type="file"*/}
+                {/*multiple*/}
+                {/*// value={this.state.img}*/}
+                {/*onChange={this.changeImg}*/}
+                {/*/>*/}
+                <button className={s.button} onClick={this.save}>Save</button>
+                <progress value={this.state.progress} max="100"/>
+
             </div>
-        );
+
+            // {/*<div style={style}>*/
+            // }
+
+            // }
+            // {/*<br/>*/
+            // }
+            // {/*<input type="file" onChange={this.handleChange}/>*/
+            // }
+            // {/*<button onClick={this.handleUpload}>Upload</button>*/
+            // }
+            // {/*<br/>*/
+            // }
+            // {/*<img src={this.state.url || 'http://via.placeholder.com/400x300'} alt="Uploaded images" height="300"*/
+            // }
+            // {/*width="400"/>*/
+            // }
+            // {/*</div>*/
+            // }
+        )
     }
 }
 
-Admin.propTypes = {};
 export default Admin;

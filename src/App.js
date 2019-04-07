@@ -27,7 +27,7 @@ class App extends Component {
                             {/*<FixedMenu/>*/}
                             <Portfolio/>
                             <Contact/>
-                            {/*<Image/>*/}
+                            <Image/>
                         </div> } />
                 </BrowserRouter>
 
